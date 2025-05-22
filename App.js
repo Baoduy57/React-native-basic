@@ -1,20 +1,34 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Text, View } from "react-native";
+import HomeScreen from "./components/review/home";
+import DetailScreen from "./components/review/detail";
+import AboutScreen from "./components/review/about";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
 
-export default function App() {
+SplashScreen.preventAutoHideAsync();
+
+const App = () => {
+  const [loaded, error] = useFonts({
+    "OpenSans-Regular": require("./assets/fonts/OpenSans-Regular.ttf"),
+  });
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+  if (!loaded && !error) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Hello tao la Duy</Text>
-      <StatusBar style="auto" />
+    <View>
+      <HomeScreen />
+      <DetailScreen />
+      <AboutScreen />
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+export default App;
